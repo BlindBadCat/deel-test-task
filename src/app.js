@@ -297,5 +297,61 @@ app.get(
     return res.json(profession)
 });
 
+app.get(
+  '/admin/best-clients',
+  [
+    getProfile,
+    //TODO: add queri validation and ADMIN AUTH
+  ],
+  async (req, res) =>{
+    const {Job, Profile, Contract} = req.app.get('models');
+    const { start, end, limit } = req.query;
+
+    // Assuming that validation is implemented with Joi middleware
+    const startDate = new Date(start);
+    const endDate = new Date(end)
+    const clients = await Profile.findAll({
+      attributes: [
+        'id',
+        'firstName',
+        'lastName',
+        [sequelize.fn('sum', sequelize.col('Client.Jobs.price')), 'paid'],
+      ],
+      where: {
+        type: 'client',
+      },
+      include: {
+        model: Contract,
+        required: true,
+        attributes: [],
+        as: 'Client',
+        include: {
+          model: Job,
+          required: true,
+          attributes: [],
+          where: {
+            paymentDate: {
+              [Op.gte]: startDate,
+              [Op.lte]: endDate,
+            },
+            paid: true,
+          },
+        },
+      },
+      group: ['Profile.id'],
+      order: [
+        [sequelize.col('paid'), 'DESC'],
+      ],
+      limit: limit || 2,
+      subQuery: false,
+    });
+
+
+    console.log(clients.map(client => ({...client.dataValues})))
+    return res.json(
+      clients.map(client => ({...client.dataValues}))
+      )
+});
+
 
 module.exports = app;
