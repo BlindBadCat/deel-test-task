@@ -7,13 +7,22 @@ const profileHP = {
   type:'client'
 };
 
-const JSProfile = {
+const profileJS = {
   id: 5,
   firstName: 'John',
   lastName: 'Snow',
   profession: 'Knows nothing',
   balance: 451.3,
   type:'client'
+};
+
+const profileAT = {
+  id: 7,
+  firstName: 'Alan',
+  lastName: 'Turing',
+  profession: 'Programmer',
+  balance: 22,
+  type:'contractor'
 };
 
 const FirstContractIdHP = 1;
@@ -89,4 +98,44 @@ describe('contracts endpoint', () => {
   //       expect(res.status).to.eq(403);
   //     });
   // });
+
+  
+  it('contracts/ should return a list of profile contracts', () => {
+    cy
+      .request({
+        ...requestConfigBase,
+        method: 'GET',
+        url: `contracts`,
+        failOnStatusCode: false,
+      })
+      .should((res) => {
+        const { body } = res;
+        assert.isArray(body, 'val is array');
+
+        const notOwnedContracts = body.filter(
+          ({ ClientId, ContractorId }) => !(ClientId == profileHP.id || ContractorId == profileHP.id)
+        );
+        expect(notOwnedContracts.length).to.eq(0);
+        // There is only one not terminated Contract in the DB
+        expect(body.length).to.eq(1);
+      });
+  });
+
+  it('contracts/ should return a list of profile contracts', () => {
+    cy
+      .request({
+        headers: {
+          profile_id: profileAT.id
+        },
+        method: 'GET',
+        url: `contracts`,
+        failOnStatusCode: false,
+      })
+      .should((res) => {
+        const { body } = res;
+
+        // This user has 3 not terminated contracts
+        expect(body.length).to.eq(3);
+      });
+  });
 })
