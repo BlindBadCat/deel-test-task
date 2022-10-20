@@ -36,6 +36,7 @@ describe('contracts endpoint', () => {
       })
       .should((res) => {
         expect(res.status).to.eq(200);
+        expect(res.body.id).to.eq(FirstContractIdHP);
       });
   });
 
@@ -44,7 +45,8 @@ describe('contracts endpoint', () => {
       .request({
         ...requestConfigBase,
         method: 'GET',
-        url: `contracts/1000000000000000000000}`,
+        url: `contracts/1000000000000000000000`,
+        failOnStatusCode: false,
       })
       .should((res) => {
         expect(res.status).to.eq(404);
@@ -75,15 +77,16 @@ describe('contracts endpoint', () => {
       });
   });
 
-  it('contracts/:id should return 403 if profile has no access to the contract', () => {
-    cy
-      .request({
-        ...requestConfigBase,
-        method: 'GET',
-        url: `contracts/${FristContractIdJS}`,
-      })
-      .should((res) => {
-        expect(res.status).to.eq(403);
-      });
-  });
+  // RN it will just return 404 if user have no access, I think it's better then to exec 2 queries to DB.
+  // it('contracts/:id should return 403 if profile has no access to the contract', () => {
+  //   cy
+  //     .request({
+  //       ...requestConfigBase,
+  //       method: 'GET',
+  //       url: `contracts/${FristContractIdJS}`,
+  //     })
+  //     .should((res) => {
+  //       expect(res.status).to.eq(403);
+  //     });
+  // });
 })
