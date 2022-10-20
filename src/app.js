@@ -151,7 +151,7 @@ app.post(
           { balance: job.price },
           { 
             where: { id: job.contract.contractorId },
-            transaction: t 
+            transaction,
           }
         );
 
@@ -160,7 +160,7 @@ app.post(
           { balance: -job.price },
           { 
             where: { id: profile.id },
-            transaction: t 
+            transaction,
           },
         );
 
@@ -172,7 +172,7 @@ app.post(
           },
           {
             where: { id: job.id }, 
-            transaction: t 
+            transaction,
           },
         );
 
