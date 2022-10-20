@@ -57,31 +57,22 @@ describe('contracts endpoint', () => {
       .request({
         ...requestConfigBase,
         method: 'GET',
-        url: `contracts/----}`,
+        url: `contracts/----`,
+        failOnStatusCode: false,
       })
       .should((res) => {
-        expect(res.status).to.eq(400);
+        expect(res.status).to.eq(422);
       });
     cy
       .request({
         ...requestConfigBase,
         method: 'GET',
-        url: `contracts/ssssssssssssss}`,
+        url: `contracts/ssssss123123--=ssssssss`,
+        failOnStatusCode: false
       })
       .should((res) => {
-        expect(res.status).to.eq(400);
+        expect(res.status).to.eq(422);
       });
-      
-    cy
-      .request({
-        ...requestConfigBase,
-        method: 'GET',
-        url: `contracts/00000000}`,
-      })
-      .should((res) => {
-        expect(res.status).to.eq(400);
-      });
-      
   });
 
   it('contracts/:id should return 403 if profile has no access to the contract', () => {
