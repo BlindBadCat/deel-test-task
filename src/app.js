@@ -346,8 +346,6 @@ app.get(
       subQuery: false,
     });
 
-
-    console.log(clients.map(client => ({...client.dataValues})))
     return res.json(
       clients.map(client => ({...client.dataValues}))
       )
