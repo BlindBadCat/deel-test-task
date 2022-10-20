@@ -247,4 +247,55 @@ app.post(
 });
 
 
+
+app.get(
+  '/admin/best-profession',
+  [
+    getProfile,
+    //TODO: add queri validation and ADMIN AUTH
+  ],
+  async (req, res) =>{
+    const {Job, Profile, Contract} = req.app.get('models');
+    const { start, end } = req.query;
+
+    // Assuming that validation is implemented with Joi middleware
+    const startDate = new Date(start);
+    const endDate = new Date(end)
+    const profession = await Profile.findOne({
+      attributes: [
+        'profession',
+        [sequelize.fn('sum', sequelize.col('Contractor.Jobs.price')), 'total'],
+      ],
+      where: {
+        type: 'contractor'
+      },
+      include: {
+        model: Contract,
+        required: true,
+        attributes: [],
+        as: 'Contractor',
+        include: {
+          model: Job,
+          required: true,
+          attributes: [],
+          where: {
+            paymentDate: {
+              [Op.gte]: startDate,
+              [Op.lte]: endDate,
+            },
+            paid: true,
+          },
+        },
+      },
+      group: 'profession',
+      order: [
+        [sequelize.col('total'), 'DESC'],
+      ],
+      subQuery: false,
+    });
+
+    return res.json(profession)
+});
+
+
 module.exports = app;
