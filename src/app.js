@@ -33,13 +33,15 @@ app.get(
           id,
           [Op.or]: [
             { ClientId: profile.id },
-            { ContractorId: profile.id }
-          ]
-        }
-      }
+            { ContractorId: profile.id },
+          ],
+        },
+      },
     );
-    if(!contract) return res.status(404).end()
-    res.json(contract)
+    if (!contract) {
+      return res.status(404).end()
+    }
+    return res.json(contract)
 })
 
 app.get(
@@ -55,16 +57,18 @@ app.get(
         where: {
           [Op.or]: [
             { ClientId: profile.id },
-            { ContractorId: profile.id }
+            { ContractorId: profile.id },
           ],
           status: {
-            [Op.not]: 'terminated'
-          }
-        }
-      }
+            [Op.not]: 'terminated',
+          },
+        },
+      },
     );
-    if(!contracts) return res.status(404).end()
-    res.json(contracts)
+    if (!contracts) {
+      return res.status(404).end()
+    }
+    return res.json(contracts)
 })
 
 
@@ -92,13 +96,15 @@ app.get(
             ],
             status: {
               [Op.not]: 'terminated'
-            }
-          }
-         }]
-      }
+            },
+          },
+         }],
+      },
     );
-    if(!jobs) return res.status(404).end()
-    res.json(jobs)
+    if (!jobs) {
+      return res.status(404).end();
+    }
+    res.json(jobs);
 });
 
 
@@ -113,11 +119,12 @@ app.post(
     const {job_id} = req.params;
     const {profile} = req;
 
-    if (profile.type !== 'Client') {
-      res.status(400).end();
+    if (profile.type !== 'client') {
+      return res.status(400).end();
+      
     }
 
-    const result = sequelize.transaction( async (transaction) => {
+    await sequelize.transaction( async (transaction) => {
       try {
         const job = await Job.findOne(
           {
@@ -132,16 +139,18 @@ app.post(
               model: Contract,
               as: ['contract'],
               where: {
-                [Op.or]: [
-                  { ClientId: profile.id },
-                ],
+                 ClientId: profile.id 
               }
              }],
           },
           transaction
         );
 
-        if(!job) return res.status(400).end();
+        if (!job) {
+          return res.status(400).end();
+          
+        }
+        
         if (profile.balance < job.price) {
           return res.status(400).end();
         }
@@ -150,7 +159,7 @@ app.post(
         await Profile.increment(
           { balance: job.price },
           { 
-            where: { id: job.contract.contractorId },
+            where: { id: job.Contract.ContractorId },
             transaction,
           }
         );
@@ -175,13 +184,14 @@ app.post(
             transaction,
           },
         );
-
-        return res.status(200).end();
+        console.log('paid');
 
       } catch (e) {
         console.log(e);
       }
     });
+    
+    return res.status(200).end();
 });
 
 
@@ -202,7 +212,7 @@ app.post(
       where: { id:  userId } 
     });
     if (!client) {
-      res.status(404).end();
+      return res.status(404).end();
     }
 
     await sequelize.transaction(async (transaction) => {
@@ -228,11 +238,11 @@ app.post(
       
   
       if (!amountToPayTotal) {
-        res.status(400).end();
+        return res.status(400).end();
       }
   
       if (amountToPayTotal / 4 < amount) {
-        res.status(400).end();
+        return res.status(400).end();
       }
   
       await Profile.increment(
@@ -243,7 +253,7 @@ app.post(
         },
       );
     });
-    res.status(200).end();
+    return res.status(200).end();
 });
 
 

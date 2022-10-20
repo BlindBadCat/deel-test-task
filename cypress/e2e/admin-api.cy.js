@@ -40,7 +40,6 @@ describe('admin endpoint', () => {
         failOnStatusCode: false,
       })
       .should((res) => {
-        console.log(res.body)
         expect(res.body.length).to.eq(2);
       });  
   })

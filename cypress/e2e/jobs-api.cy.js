@@ -9,6 +9,7 @@ const profileHP = {
 
 const unPaidJobId = 2;
 const paidJobId = 7;
+const lowFundsUnpdaidJobId = 1;
 
 
 describe('jobs endpoint', () => {
@@ -61,11 +62,34 @@ describe('jobs endpoint', () => {
   });
 
   it('jobs/:job_id/pay should return 400 can not pay bcs of low balance', () => {
-    // TODO: implement low balance test
+    cy
+      .request({
+        headers: {
+          profile_id: 4,
+        },
+        method: 'POST',
+        url: `jobs/${5}/pay`,
+        failOnStatusCode: false,
+      })
+      .should((res) => {
+        expect(res.status).to.eq(400);
+      });
   });
 
   
-  it('jobs/:job_id/pay should pay for the job if everything is OK', () => {
-    // TODO: implement success validation test
+  it('jobs/:job_id/pay should pay for the job if everything is OK | DB should be resseted after 1st run', () => {
+    cy
+      .request({
+        headers: {
+          profile_id: 1,
+        },
+        method: 'POST',
+        url: `jobs/${1}/pay`,
+        failOnStatusCode: false,
+      })
+      .should((res) => {
+        console.log(res.status)
+        expect(res.status).to.eq(200);
+      });
   });
 })

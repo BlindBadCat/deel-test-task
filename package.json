@@ -12,7 +12,9 @@
   "scripts": {
     "start": "nodemon ./src/server.js",
     "seed": "node ./scripts/seedDb.js",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "e2e": "npm run seed && npm run cypress:run"
   },
   "devDependencies": {
     "concurrently": "4.1.0",
