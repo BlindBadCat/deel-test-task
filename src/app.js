@@ -49,7 +49,6 @@ app.get(
   ],
   async (req, res) =>{
     const {Contract} = req.app.get('models');
-    const {id} = req.params;
     const {profile} = req;
     const contracts = await Contract.findAll(
       {
@@ -66,6 +65,41 @@ app.get(
     );
     if(!contracts) return res.status(404).end()
     res.json(contracts)
+})
+
+
+app.get(
+  '/jobs/unpaid',
+  [
+    getProfile,
+  ],
+  async (req, res) =>{
+    const {Job, Contract} = req.app.get('models');
+    const {profile} = req;
+    const jobs = await Job.findAll(
+      {
+        where: {
+          paid: {
+            [Op.not]: true
+          }
+        },
+        include: [{
+          model: Contract,
+          where: {
+            [Op.or]: [
+              { ClientId: profile.id },
+              { ContractorId: profile.id }
+            ],
+            status: {
+              [Op.not]: 'terminated'
+            }
+          }
+         }]
+      
+      }
+    );
+    if(!jobs) return res.status(404).end()
+    res.json(jobs)
 })
 
 module.exports = app;
