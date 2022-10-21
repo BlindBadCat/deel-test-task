@@ -19,6 +19,19 @@ First and most of all I wan't to use Typescript and NestJs for this task, but du
 4. Add more tests to check how transactions works
 5. Add linter and ect.
 
+I would use following sturcture. Separation of the DB read/write logic with business logic, separation of logic between business entities and etc.:
+```
+├─ src/
+│  ├─ features/
+│  │  ├─ profile/
+│  │  │  ├─ service - business logic goes here
+│  │  │  ├─ repository - DB read write logic (sometimes queries are to big, I prefer to separete them from the business logic if possible) 
+│  │  │  ├─ model - model definition
+│  │  ├─ admin/
+│  │  │  ├─ service - business logic goes here, imports for all other services which provides info for the admin requests. This service have no direct access to the DB, only to the other features services
+│  │  │  ├─ controller - handler for the route
+```
+
 
 Overall notes about architecture for payments - I would implement it in an event driven way. We can discuss it on the call.
 
