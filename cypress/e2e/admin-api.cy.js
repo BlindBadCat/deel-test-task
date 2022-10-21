@@ -56,7 +56,9 @@ describe('admin endpoint', () => {
         failOnStatusCode: false,
       })
       .should((res) => {
-        expect(res.body[0].lastName).to.eq('Kethcum');
+        const ashKetchum = res.body[0];
+        expect(ashKetchum.fullName).to.eq('Ash Kethcum');
+        expect(ashKetchum.paid).to.eq(2020);
       });  
   })
 })

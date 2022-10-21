@@ -355,10 +355,19 @@ app.get(
       limit: limit || 2,
       subQuery: false,
     });
+    console.log(clients)
 
     return res.json(
-      clients.map(client => ({...client.dataValues}))
-    );
+      clients.map(
+        ({dataValues}) => {
+          const { id, lastName, firstName, paid } = dataValues;
+
+          return { 
+            id, 
+            fullName: `${firstName} ${lastName}`, 
+            paid 
+          };
+        }));
 });
 
 
