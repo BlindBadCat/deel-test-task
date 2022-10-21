@@ -1,3 +1,29 @@
+## Run 
+
+*!important!* it will drop your db.
+1. `npm i`
+2. `npm start`
+3. open a 2nd terminal and run `npm run e2e` to launch cypress tests
+4. or run `npm run seed` and `npm run cypress:open` to use cypress UI client
+
+
+
+## TODOs
+
+First and most of all I wan't to use Typescript and NestJs for this task, but due to the lack of time I've proceeded as is.
+
+
+1. Separate all into `controllers/services/routes/repositories(db rw interractions)`
+2. Add descriptive Http errors (not only statuses)
+3. Add a validation to the each request
+4. Add more tests to check how transactions works
+5. Add linter and ect.
+
+
+Overall notes about architecture for payments - I would implement it in an event driven way. We can discuss it on the call.
+
+
+
 # DEEL BACKEND TASK
 
   
