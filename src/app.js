@@ -24,9 +24,9 @@ app.get(
     joiValidate(joiValidationSchemas.contractorId)
   ],
   async (req, res) =>{
-    const {Contract} = req.app.get('models');
-    const {id} = req.params;
-    const {profile} = req;
+    const { Contract } = req.app.get('models');
+    const { id } = req.params;
+    const { profile } = req;
     const contract = await Contract.findOne(
       {
         where: {
@@ -50,8 +50,8 @@ app.get(
     getProfile,
   ],
   async (req, res) =>{
-    const {Contract} = req.app.get('models');
-    const {profile} = req;
+    const { Contract } = req.app.get('models');
+    const { profile } = req;
     const contracts = await Contract.findAll(
       {
         where: {
@@ -66,9 +66,9 @@ app.get(
       },
     );
     if (!contracts) {
-      return res.status(404).end()
+      return res.status(404).end();
     }
-    return res.json(contracts)
+    return res.json(contracts);
 })
 
 
@@ -78,8 +78,8 @@ app.get(
     getProfile,
   ],
   async (req, res) =>{
-    const {Job, Contract} = req.app.get('models');
-    const {profile} = req;
+    const { Job, Contract } = req.app.get('models');
+    const { profile } = req;
     const jobs = await Job.findAll(
       {
         where: {
@@ -115,9 +115,9 @@ app.post(
   ],
   async (req, res) =>{
 
-    const {Job, Contract, Profile} = req.app.get('models');
-    const {job_id} = req.params;
-    const {profile} = req;
+    const { Job, Contract, Profile } = req.app.get('models');
+    const { job_id} = req.params;
+    const { profile} = req;
 
     if (profile.type !== 'client') {
       return res.status(400).end();
@@ -203,8 +203,8 @@ app.post(
     //TODO: add validation for userId
   ],
   async (req, res) =>{
-    const {Job, Profile, Contract} = req.app.get('models');
-    const {userId} = req.params;
+    const { Job, Profile, Contract } = req.app.get('models');
+    const { userId } = req.params;
 
     const { amount } = req.body;
 
@@ -265,7 +265,7 @@ app.get(
     //TODO: add queri validation and ADMIN AUTH
   ],
   async (req, res) =>{
-    const {Job, Profile, Contract} = req.app.get('models');
+    const { Job, Profile, Contract } = req.app.get('models');
     const { start, end } = req.query;
 
     // Assuming that validation is implemented with Joi middleware
@@ -314,7 +314,7 @@ app.get(
     //TODO: add queri validation and ADMIN AUTH
   ],
   async (req, res) =>{
-    const {Job, Profile, Contract} = req.app.get('models');
+    const { Job, Profile, Contract } = req.app.get('models');
     const { start, end, limit } = req.query;
 
     // Assuming that validation is implemented with Joi middleware
@@ -358,7 +358,7 @@ app.get(
 
     return res.json(
       clients.map(client => ({...client.dataValues}))
-      )
+    );
 });
 
 
