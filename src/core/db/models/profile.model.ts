@@ -14,7 +14,6 @@ export class Profile extends Model {
 
   @AllowNull(false)
   @Column
-
   lastName: string;
 
   @AllowNull(false)
