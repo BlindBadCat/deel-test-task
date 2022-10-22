@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
 import { Contract } from './models/contract.model';
+import { Job } from './models/job.model';
 import { Profile } from './models/profile.model';
 
 export const databaseProviders = [
@@ -13,6 +14,7 @@ export const databaseProviders = [
       sequelize.addModels([
         Profile,
         Contract,
+        Job,
       ]);
       await sequelize.sync();
       return sequelize;
