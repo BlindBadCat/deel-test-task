@@ -1,4 +1,5 @@
-import { AllowNull, Column, DataType, Model, Table } from 'sequelize-typescript';
+import { AllowNull, BelongsTo, Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { Contract } from './contract.model';
 
 export enum EProfileType {
   client = 'client',
@@ -22,5 +23,12 @@ export class Job extends Model {
 
   @Column({ type: DataType.DATE })
   paymentDate: Date;
+
+  @BelongsTo(() => Contract)
+  Contract: Contract;
+
+  @ForeignKey(() => Contract)
+  @Column
+  contractId: number;
 }
 

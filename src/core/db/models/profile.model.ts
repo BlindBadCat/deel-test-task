@@ -1,4 +1,5 @@
-import { AllowNull, Column, DataType, Model, Table } from 'sequelize-typescript';
+import { AllowNull, Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import { Contract } from './contract.model';
 
 export enum EProfileType {
   client = 'client',
@@ -30,5 +31,11 @@ export class Profile extends Model {
     values: Object.values(EProfileType),
   })
   type: EProfileType;
+
+  @HasMany(() => Contract, 'ContractorId')
+  Contractor: Contract[];
+
+  @HasMany(() => Contract, 'ClientId')
+  Client: Contract[];
 }
 
