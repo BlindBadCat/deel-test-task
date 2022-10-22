@@ -19,7 +19,9 @@ First and most of all I wan't to use Typescript and NestJs for this task, but du
 4. Add more tests to check how transactions works
 5. Add linter and ect.
 
+(Update: I've created an example nest project to demonstrate the structure, you can check it on the [nest-master](https://github.com/BlindBadCat/deel-test-task/tree/nest-master/src) branch)
 I would use following sturcture. Separation of the DB read/write logic with business logic, separation of logic between business entities and etc.:
+
 ```
 ├─ src/
 │  ├─ features/
