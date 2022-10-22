@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
+import { Contract } from './models/contract.model';
 import { Profile } from './models/profile.model';
 
 export const databaseProviders = [
@@ -9,7 +10,10 @@ export const databaseProviders = [
         dialect: 'sqlite',
         storage: './database.sqlite3',
       });
-      sequelize.addModels([Profile]);
+      sequelize.addModels([
+        Profile,
+        Contract,
+      ]);
       await sequelize.sync();
       return sequelize;
     },
